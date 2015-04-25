@@ -1,0 +1,50 @@
+{
+  "name": "autohost-metrics-collector",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeanKit-Labs/autohost-metrics-collector"
+  },
+  "keywords": [
+    "metrics",
+    "telemetry",
+    "timer"
+  ],
+  "author": "LeanKit",
+  "contributors": [
+    {
+      "name": "Alex Robson",
+      "url": "http://nerdventure.io"
+    }
+  ],
+  "license": "MIT License - http://opensource.org/licenses/MIT",
+  "bugs": {
+    "url": "https://github.com/LeanKit-Labs/autohost-metrics-collector/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/autohost-metrics-collector"
+  },
+  "homepage": "https://github.com/LeanKit-Labs/autohost-metrics-collector",
+  "devDependencies": {
+    "autohost": "^0.3.1",
+    "biggulp": "~0.0.2",
+    "chai": "^2.1.1",
+    "chai-as-promised": "^4.3.0",
+    "fount": "0.0.6",
+    "gulp": "^3.8.11",
+    "halon": "^0.3.0",
+    "hyped": "^0.1.0",
+    "request": "^2.55.0",
+    "sinon": "^1.14.1"
+  },
+  "dependencies": {
+    "lodash": "^3.6.0",
+    "metronic": "^0.2.0",
+    "when": "^3.7.2"
+  }
+}
