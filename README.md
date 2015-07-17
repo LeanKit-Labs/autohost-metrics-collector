@@ -21,7 +21,7 @@ Provides a single API method.
 ### POST /api/ah/metrics
 Requires metrics to be posted as an array (do not send single metrics):
 
-```json
+```javascript
 [
 	{
 		"type": "time" | "meter" | [custom value]
