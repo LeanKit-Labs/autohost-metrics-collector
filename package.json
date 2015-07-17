@@ -22,7 +22,7 @@
       "url": "http://nerdventure.io"
     }
   ],
-  "license": "MIT License - http://opensource.org/licenses/MIT",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/LeanKit-Labs/autohost-metrics-collector/issues"
   },
@@ -31,20 +31,20 @@
   },
   "homepage": "https://github.com/LeanKit-Labs/autohost-metrics-collector",
   "devDependencies": {
-    "autohost": "^0.3.1",
-    "biggulp": "~0.0.2",
+    "autohost": "~0.4.5",
+    "biggulp": "~0.2.0",
     "chai": "^2.1.1",
     "chai-as-promised": "^4.3.0",
-    "fount": "0.0.6",
+    "fount": "~0.1.0",
     "gulp": "^3.8.11",
-    "halon": "^0.3.0",
-    "hyped": "^0.1.0",
+    "halon": "~0.3.2",
+    "hyped": "~0.2.2",
     "request": "^2.55.0",
     "sinon": "^1.14.1"
   },
   "dependencies": {
     "lodash": "^3.6.0",
-    "metronic": "^0.2.0",
+    "metronic": "~0.2.3",
     "when": "^3.7.2"
   }
 }

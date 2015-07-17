@@ -1,4 +1,4 @@
-var _ = require( 'lodash' );
+var _ = require( "lodash" );
 function processData( metrics, data ) {
 	if ( data && _.isArray( data ) ) {
 		return {
@@ -8,7 +8,7 @@ function processData( metrics, data ) {
 	} else {
 		return {
 			data: {
-				error: 'Metrics must be submitted as an array'
+				error: "Metrics must be submitted as an array"
 			},
 			status: 400
 		};

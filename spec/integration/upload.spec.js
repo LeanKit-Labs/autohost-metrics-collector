@@ -1,11 +1,12 @@
-require( '../setup' );
+require( "../setup" );
 var host;
-var fount = require( 'fount' );
-var metrics = require( 'metronic' )();
-var hyped = require( 'hyped' )();
-var request = require( 'request' );
+var autohost = require( "autohost" );
+var hyped = require( "hyped" )();
+var fount = require( "fount" );
+var metrics = require( "metronic" )();
+var request = require( "request" );
 var post = lift( request.post ).bind( request );
-var halon = require( 'halon' );
+var halon = require( "halon" );
 
 function createAdapter() {
 	return {
@@ -17,7 +18,7 @@ function createAdapter() {
 			this.metrics = [];
 		},
 		onMetric: function( data ) {
-			if ( data.type === 'time' ) {
+			if ( data.type === "time" ) {
 				this.durations.push( data );
 			} else {
 				this.metrics.push( data );
@@ -42,16 +43,14 @@ function setupHyped() {
 	purgeCache();
 	var adapter = createAdapter();
 	metrics.use( adapter );
-	host = require( 'autohost' );
-	host.init( {
+	host = hyped.createHost( autohost, {
 		port: 8899,
-		noOptions: true,
-		urlStrategy: hyped.urlStrategy,
-		modules: [ './src/index.js' ],
+		modules: [ "./src/index.js" ],
 		fount: fount,
 		metrics: metrics
-	} ).then( hyped.addResources );
+	} );
 	hyped.setupMiddleware( host );
+	host.start();
 	return adapter;
 }
 
@@ -59,38 +58,38 @@ function setupPlain() {
 	purgeCache();
 	var adapter = createAdapter();
 	metrics.use( adapter );
-	host = require( 'autohost' );
-	host.init( {
+	host = autohost( {
 		port: 8898,
-		modules: [ './src/index.js' ],
+		modules: [ "./src/index.js" ],
 		fount: fount,
 		metrics: metrics
 	} );
+	host.start();
 	return adapter;
 }
 
-describe( 'HTTP Metrics Collector', function() {
+describe( "HTTP Metrics Collector", function() {
 	var adapter;
 	before( function() {
 		adapter = setupPlain();
 	} );
 
-	describe( 'Invalid data format', function() {
-		it( 'should result in a 400 error', function() {
+	describe( "Invalid data format", function() {
+		it( "should result in a 400 error", function() {
 			return post( {
-				url: 'http://localhost:8898/api/ah/metrics',
+				url: "http://localhost:8898/api/ah/metrics",
 				json: {
-					type: 'time',
-					units: 'ms',
-					key: 'test.time',
+					type: "time",
+					units: "ms",
+					key: "test.time",
 					value: 10,
 					metadata: {}
 				},
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			} )
 				.then( function( x ) {
 					x[ 0 ].statusCode.should.equal( 400 );
-					x[ 1 ].should.eql( { error: 'Metrics must be submitted as an array' } );
+					x[ 1 ].should.eql( { error: "Metrics must be submitted as an array" } );
 				} );
 		} );
 
@@ -99,32 +98,32 @@ describe( 'HTTP Metrics Collector', function() {
 		} );
 	} );
 
-	describe( 'Valid data format', function() {
+	describe( "Valid data format", function() {
 		var result;
 		before( function() {
 			return post( {
-				url: 'http://localhost:8898/api/ah/metrics',
+				url: "http://localhost:8898/api/ah/metrics",
 				json: [
 					{
-						type: 'time',
-						units: 'ms',
-						key: 'test.time',
+						type: "time",
+						units: "ms",
+						key: "test.time",
 						value: 10,
 						metadata: {}
 					},
 					{
-						type: 'meter',
-						units: '',
-						key: 'test.meter',
+						type: "meter",
+						units: "",
+						key: "test.meter",
 						value: 1,
 						metadata: {
 							flag: true
 						}
 					},
 					{
-						type: 'custom',
-						units: '',
-						key: 'test.custom',
+						type: "custom",
+						units: "",
+						key: "test.custom",
 						value: 10,
 						metadata: {
 							one: 1,
@@ -132,49 +131,49 @@ describe( 'HTTP Metrics Collector', function() {
 						}
 					},
 					{
-						type: 'bad',
-						units: '',
-						key: 'invalid',
+						type: "bad",
+						units: "",
+						key: "invalid"
 					}
 				],
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			} )
 				.then( function( x ) {
 					result = x[ 1 ];
 				} );
 		} );
 
-		it( 'should return correct counts', function() {
+		it( "should return correct counts", function() {
 			result.should.eql( {
 				processed: 3,
 				invalid: 1
 			} );
 		} );
 
-		it( 'should pass valid metrics to adapter', function() {
-			_.omit( adapter.durations[ 0 ], 'timestamp' ).should.eql(
+		it( "should pass valid metrics to adapter", function() {
+			_.omit( adapter.durations[ 0 ], "timestamp" ).should.eql(
 				{
-					type: 'time',
-					units: 'ms',
-					key: 'test.time',
+					type: "time",
+					units: "ms",
+					key: "test.time",
 					value: 10
 				}
 			);
 
 			_.map( adapter.metrics.slice( 0, 2 ), function( x ) {
-				return _.omit( x, 'timestamp' );
+				return _.omit( x, "timestamp" );
 			} ).should.eql( [
 				{
-					type: 'meter',
-					units: '',
-					key: 'test.meter',
+					type: "meter",
+					units: "",
+					key: "test.meter",
 					value: 1,
 					flag: true
 				},
 				{
-					type: 'custom',
-					units: '',
-					key: 'test.custom',
+					type: "custom",
+					units: "",
+					key: "test.custom",
 					value: 10,
 					one: 1,
 					two: 2
@@ -190,12 +189,12 @@ describe( 'HTTP Metrics Collector', function() {
 	} );
 } );
 
-describe( 'Hypermedia Metrics Collector', function() {
+describe( "Hypermedia Metrics Collector", function() {
 	var adapter, client;
 	before( function( done ) {
 		adapter = setupHyped();
 		client = halon( {
-			root: 'http://localhost:8899/api',
+			root: "http://localhost:8899/api",
 			adapter: halon.requestAdapter( request ) } );
 		client.connect()
 			.then( function( c ) {
@@ -204,19 +203,20 @@ describe( 'Hypermedia Metrics Collector', function() {
 			} );
 	} );
 
-	describe( 'Invalid data format', function() {
-		it( 'should result in a 400 error', function() {
+	describe( "Invalid data format", function() {
+		it( "should result in a 400 error", function() {
 			return client.metrics.upload( {} )
-				.then( function( x ) {
-					_.omit( x, 'upload' )
+				.then( null, function( x ) {
+					_.omit( x, "upload" )
 						.should.eql( {
-						_origin: { method: 'POST', href: '/api/ah/metrics/' },
-						_resource: 'metrics',
-						_action: 'upload',
+						_origin: { method: "POST", href: "/api/ah/metrics/" },
+						_resource: "metrics",
+						_action: "upload",
 						_links: {
-							'upload': { method: 'POST', href: '/api/ah/metrics/' }
+							upload: { method: "POST", href: "/api/ah/metrics/" }
 						},
-					error: 'Metrics must be submitted as an array' } );
+					status: 400,
+					error: "Metrics must be submitted as an array" } );
 				} );
 		} );
 
@@ -225,30 +225,30 @@ describe( 'Hypermedia Metrics Collector', function() {
 		} );
 	} );
 
-	describe( 'Valid data format', function() {
+	describe( "Valid data format", function() {
 		var result;
 		before( function() {
 			return client.metrics.upload( [
 				{
-					type: 'time',
-					units: 'ms',
-					key: 'hyped.time',
+					type: "time",
+					units: "ms",
+					key: "hyped.time",
 					value: 10,
 					metadata: {}
 				},
 				{
-					type: 'meter',
-					units: '',
-					key: 'hyped.meter',
+					type: "meter",
+					units: "",
+					key: "hyped.meter",
 					value: 1,
 					metadata: {
 						flag: true
 					}
 				},
 				{
-					type: 'custom',
-					units: '',
-					key: 'hyped.custom',
+					type: "custom",
+					units: "",
+					key: "hyped.custom",
 					value: 10,
 					metadata: {
 						one: 1,
@@ -256,9 +256,9 @@ describe( 'Hypermedia Metrics Collector', function() {
 					}
 				},
 				{
-					type: 'bad',
-					units: '',
-					key: 'invalid',
+					type: "bad",
+					units: "",
+					key: "invalid",
 				}
 			] )
 				.then( function( x ) {
@@ -266,44 +266,45 @@ describe( 'Hypermedia Metrics Collector', function() {
 				} );
 		} );
 
-		it( 'should return correct counts', function() {
-			_.omit( result, 'upload' )
+		it( "should return correct counts", function() {
+			_.omit( result, "upload" )
 				.should.eql( {
-				_origin: { method: 'POST', href: '/api/ah/metrics/' },
-				_resource: 'metrics',
-				_action: 'upload',
+				_origin: { method: "POST", href: "/api/ah/metrics/" },
+				_resource: "metrics",
+				_action: "upload",
 				_links: {
-					'upload': { method: 'POST', href: '/api/ah/metrics/' }
+					upload: { method: "POST", href: "/api/ah/metrics/" }
 				},
+				status: 202,
 				processed: 3,
 				invalid: 1
 			} );
 		} );
 
-		it( 'should pass valid metrics to adapter', function() {
-			_.omit( adapter.durations[ 0 ], 'timestamp' ).should.eql(
+		it( "should pass valid metrics to adapter", function() {
+			_.omit( adapter.durations[ 0 ], "timestamp" ).should.eql(
 				{
-					type: 'time',
-					units: 'ms',
-					key: 'hyped.time',
+					type: "time",
+					units: "ms",
+					key: "hyped.time",
 					value: 10
 				}
 			);
 
 			_.map( adapter.metrics.slice( 0, 2 ), function( x ) {
-				return _.omit( x, 'timestamp' );
+				return _.omit( x, "timestamp" );
 			} ).should.eql( [
 				{
-					type: 'meter',
-					units: '',
-					key: 'hyped.meter',
+					type: "meter",
+					units: "",
+					key: "hyped.meter",
 					value: 1,
 					flag: true
 				},
 				{
-					type: 'custom',
-					units: '',
-					key: 'hyped.custom',
+					type: "custom",
+					units: "",
+					key: "hyped.custom",
 					value: 10,
 					one: 1,
 					two: 2
