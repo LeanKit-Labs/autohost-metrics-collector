@@ -1,6 +1,6 @@
 {
   "name": "autohost-metrics-collector",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A client-side metronic collector API for autohost",
   "main": "src/index.js",
   "repository": {
@@ -24,7 +24,7 @@
     "url": "https://github.com/LeanKit-Labs/autohost-metrics-collector/issues"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/autohost-metrics-collector"
+    "registry": "https://registry.npmjs.org"
   },
   "homepage": "https://github.com/LeanKit-Labs/autohost-metrics-collector",
   "devDependencies": {
@@ -35,13 +35,13 @@
     "fount": "~0.1.0",
     "gulp": "^3.8.11",
     "halon": "~0.3.2",
-    "hyped": "~0.2.2",
+    "hyped": "~0.2.4",
     "request": "^2.55.0",
     "sinon": "^1.14.1"
   },
   "dependencies": {
     "lodash": "^3.6.0",
-    "metronic": "~0.2.3",
+    "metronic": "~0.2.5",
     "when": "^3.7.2"
   }
 }

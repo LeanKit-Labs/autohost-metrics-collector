@@ -9,11 +9,10 @@ module.exports = function( host ) {
 				method: "post",
 				handle: function( envelope ) {
 					var processed = process( host.metrics, envelope.data );
-					if ( envelope.hyped ) {
-						envelope.hyped( processed.data ).status( processed.status ).render();
-					} else {
-						envelope.reply( { data: processed.data, status: processed.status } );
-					}
+					return {
+						status: processed.status,
+						data: processed.data
+					};
 				}
 			}
 		}

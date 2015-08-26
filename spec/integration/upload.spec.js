@@ -258,7 +258,7 @@ describe( "Hypermedia Metrics Collector", function() {
 				{
 					type: "bad",
 					units: "",
-					key: "invalid",
+					key: "invalid"
 				}
 			] )
 				.then( function( x ) {
