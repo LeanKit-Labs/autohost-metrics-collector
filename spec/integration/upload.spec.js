@@ -77,7 +77,7 @@ describe( "HTTP Metrics Collector", function() {
 	describe( "Invalid data format", function() {
 		it( "should result in a 400 error", function() {
 			return post( {
-				url: "http://localhost:8898/api/ah/metrics",
+				url: "http://localhost:8898/api/metricsCollector",
 				json: {
 					type: "time",
 					units: "ms",
@@ -102,7 +102,7 @@ describe( "HTTP Metrics Collector", function() {
 		var result;
 		before( function() {
 			return post( {
-				url: "http://localhost:8898/api/ah/metrics",
+				url: "http://localhost:8898/api/metricsCollector",
 				json: [
 					{
 						type: "time",
@@ -205,15 +205,15 @@ describe( "Hypermedia Metrics Collector", function() {
 
 	describe( "Invalid data format", function() {
 		it( "should result in a 400 error", function() {
-			return client.metrics.upload( {} )
+			return client.metricsCollector.upload( {} )
 				.then( null, function( x ) {
 					_.omit( x, "upload" )
 						.should.eql( {
-						_origin: { method: "POST", href: "/api/ah/metrics/" },
-						_resource: "metrics",
+						_origin: { method: "POST", href: "/api/metricsCollector/" },
+						_resource: "metricsCollector",
 						_action: "upload",
 						_links: {
-							upload: { method: "POST", href: "/api/ah/metrics/" }
+							upload: { method: "POST", href: "/api/metricsCollector/" }
 						},
 					status: 400,
 					error: "Metrics must be submitted as an array" } );
@@ -228,7 +228,7 @@ describe( "Hypermedia Metrics Collector", function() {
 	describe( "Valid data format", function() {
 		var result;
 		before( function() {
-			return client.metrics.upload( [
+			return client.metricsCollector.upload( [
 				{
 					type: "time",
 					units: "ms",
@@ -269,11 +269,11 @@ describe( "Hypermedia Metrics Collector", function() {
 		it( "should return correct counts", function() {
 			_.omit( result, "upload" )
 				.should.eql( {
-				_origin: { method: "POST", href: "/api/ah/metrics/" },
-				_resource: "metrics",
+				_origin: { method: "POST", href: "/api/metricsCollector/" },
+				_resource: "metricsCollector",
 				_action: "upload",
 				_links: {
-					upload: { method: "POST", href: "/api/ah/metrics/" }
+					upload: { method: "POST", href: "/api/metricsCollector/" }
 				},
 				status: 202,
 				processed: 3,

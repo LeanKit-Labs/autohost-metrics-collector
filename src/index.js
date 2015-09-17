@@ -1,8 +1,7 @@
 var process = require( "./processor" );
 module.exports = function( host ) {
 	return {
-		urlPrefix: "/ah",
-		name: "metrics",
+		name: "metricsCollector",
 		actions: {
 			upload: {
 				url: "/",
