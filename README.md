@@ -18,7 +18,7 @@ host.metrics.use( statsd );
 ## API
 Provides a single API method.
 
-### POST /api/ah/metrics
+### POST /api/metricsCollector
 Requires metrics to be posted as an array (do not send single metrics):
 
 ```javascript
