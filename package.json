@@ -1,6 +1,6 @@
 {
   "name": "autohost-metrics-collector",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A client-side metronic collector API for autohost",
   "main": "src/index.js",
   "repository": {
@@ -17,6 +17,10 @@
     {
       "name": "Alex Robson",
       "url": "http://nerdventure.io"
+    },
+    {
+      "name": "Jim Cowart",
+      "url": "http://ifandelse.com"
     }
   ],
   "license": "MIT",
